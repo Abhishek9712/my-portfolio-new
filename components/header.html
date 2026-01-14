@@ -1,0 +1,42 @@
+<nav class="fixed w-full top-0 z-50 bg-dark/80 backdrop-blur-md border-b border-white/5" id="main-nav">
+    <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+        <a href="#" class="font-mono font-bold text-xl text-white tracking-tighter hover-trigger" data-cursor="link">
+            <span class="text-primary">&lt;</span>Abhishek<span class="text-primary">/&gt;</span>
+        </a>
+
+        <!-- Desktop Menu -->
+        <div class="hidden md:flex gap-8">
+            <a href="#about" class="text-sm font-medium hover:text-primary transition-colors hover-trigger"
+                data-cursor="link">About</a>
+            <a href="#philosophy" class="text-sm font-medium hover:text-primary transition-colors hover-trigger"
+                data-cursor="link">Philosophy</a>
+            <a href="#skills" class="text-sm font-medium hover:text-primary transition-colors hover-trigger"
+                data-cursor="link">Skills</a>
+            <a href="#projects" class="text-sm font-medium hover:text-primary transition-colors hover-trigger"
+                data-cursor="link">Work</a>
+            <a href="#contact"
+                class="px-4 py-2 border border-primary text-primary text-sm font-mono rounded hover:bg-primary hover:text-white transition-all hover-trigger"
+                data-cursor="link">Get in Touch</a>
+        </div>
+
+        <!-- Mobile Menu Button -->
+        <button id="mobile-menu-btn" class="md:hidden text-white focus:outline-none hover-trigger" data-cursor="link">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16">
+                </path>
+            </svg>
+        </button>
+    </div>
+
+    <!-- Mobile Menu Dropdown -->
+    <div id="mobile-menu" class="hidden md:hidden bg-dark border-b border-white/5 absolute w-full">
+        <div class="px-6 py-4 space-y-4 flex flex-col">
+            <a href="#about" class="text-sm font-medium hover:text-primary transition-colors text-white">About</a>
+            <a href="#philosophy"
+                class="text-sm font-medium hover:text-primary transition-colors text-white">Philosophy</a>
+            <a href="#skills" class="text-sm font-medium hover:text-primary transition-colors text-white">Skills</a>
+            <a href="#projects" class="text-sm font-medium hover:text-primary transition-colors text-white">Work</a>
+            <a href="#contact" class="text-sm font-medium text-primary">Get in Touch</a>
+        </div>
+    </div>
+</nav>
