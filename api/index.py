@@ -14,6 +14,13 @@ EMAIL_PASS = os.environ.get('EMAIL_PASS')
 SMTP_SERVER = 'smtp.gmail.com'
 SMTP_PORT = 587
 
+@app.route('/api/health', methods=['GET'])
+def health_check():
+    return jsonify({
+        'status': 'ok', 
+        'email_configured': bool(EMAIL_USER and EMAIL_PASS)
+    })
+
 @app.route('/api/send-email', methods=['POST'])
 def send_email():
     data = request.get_json()
