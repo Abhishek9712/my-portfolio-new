@@ -14,6 +14,15 @@ EMAIL_PASS = os.environ.get('EMAIL_PASS')
 SMTP_SERVER = 'smtp.gmail.com'
 SMTP_PORT = 587
 
+# Debug: Catch-all to see what path is being received
+@app.route('/<path:path>')
+def catch_all(path):
+    return jsonify({
+        'error': 'Route not found in Flask',
+        'path_received': path,
+        'full_path': request.path
+    }), 404
+
 @app.route('/api/health', methods=['GET'])
 def health_check():
     return jsonify({
