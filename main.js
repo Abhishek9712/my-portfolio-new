@@ -141,7 +141,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // --- Contact Form Handling ---
         const contactForm = document.getElementById('contact-form');
         if (contactForm) {
-            contactForm.addEventListener('submit', (e) => {
+            contactForm.addEventListener('submit', async (e) => {
                 e.preventDefault();
 
                 const button = contactForm.querySelector('button');
@@ -153,21 +153,41 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
                 button.disabled = true;
 
-                // Simulate sending (1.5s delay)
-                setTimeout(() => {
-                    if (buttonTextSpan) buttonTextSpan.textContent = 'Message Sent!';
-                    button.classList.add('bg-green-500', 'text-white');
+                // Collect form data
+                const formData = new FormData(contactForm);
+                const data = Object.fromEntries(formData.entries());
 
-                    // Reset form
-                    contactForm.reset();
+                try {
+                    // Use relative path for Vercel deployment
+                    const response = await fetch('/api/send-email', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(data)
+                    });
 
+                    const result = await response.json();
+
+                    if (response.ok) {
+                        if (buttonTextSpan) buttonTextSpan.textContent = 'Message Sent!';
+                        button.classList.add('bg-green-500', 'text-white');
+                        contactForm.reset();
+                    } else {
+                        throw new Error(result.error || 'Failed to send');
+                    }
+                } catch (error) {
+                    console.error('Error:', error);
+                    if (buttonTextSpan) buttonTextSpan.textContent = 'Failed!';
+                    button.classList.add('bg-red-500', 'text-white');
+                } finally {
                     // Restore button after 3 seconds
                     setTimeout(() => {
                         button.innerHTML = originalText;
-                        button.classList.remove('bg-green-500', 'text-white');
+                        button.classList.remove('bg-green-500', 'bg-red-500', 'text-white');
                         button.disabled = false;
                     }, 3000);
-                }, 1500);
+                }
             });
         }
 
