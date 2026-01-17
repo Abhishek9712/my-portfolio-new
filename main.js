@@ -143,6 +143,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (contactForm) {
             contactForm.addEventListener('submit', async (e) => {
                 e.preventDefault();
+                console.log("Contact form submitted!"); // DEBUG LOG
 
                 const button = contactForm.querySelector('button');
                 const originalText = button.innerHTML;
