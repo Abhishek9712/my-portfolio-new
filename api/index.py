@@ -14,14 +14,15 @@ EMAIL_PASS = os.environ.get('EMAIL_PASS')
 SMTP_SERVER = 'smtp.gmail.com'
 SMTP_PORT = 587
 
-# Debug: Catch-all to see what path is being received
 @app.route('/<path:path>')
 def catch_all(path):
     return jsonify({
-        'error': 'Route not found in Flask',
+        'status': 'debug',
+        'message': 'Caught by catch-all',
         'path_received': path,
-        'full_path': request.path
-    }), 404
+        'full_path': request.path,
+        'email_configured': bool(EMAIL_USER and EMAIL_PASS)
+    }), 200
 
 @app.route('/api/health', methods=['GET'])
 def health_check():
@@ -30,6 +31,8 @@ def health_check():
         'email_configured': bool(EMAIL_USER and EMAIL_PASS)
     })
 
+# Handle both paths (with and without prefix)
+@app.route('/send-email', methods=['POST'])
 @app.route('/api/send-email', methods=['POST'])
 def send_email():
     data = request.get_json()
