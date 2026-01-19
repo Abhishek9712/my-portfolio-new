@@ -141,33 +141,51 @@ document.addEventListener('DOMContentLoaded', () => {
         // --- Contact Form Handling ---
         const contactForm = document.getElementById('contact-form');
         if (contactForm) {
-            contactForm.addEventListener('submit', (e) => {
+            contactForm.addEventListener('submit', async (e) => {
                 e.preventDefault();
 
                 const button = contactForm.querySelector('button');
                 const originalText = button.innerHTML;
                 const buttonTextSpan = button.querySelector('span');
+                const formData = new FormData(contactForm);
+                const data = Object.fromEntries(formData.entries());
 
                 if (buttonTextSpan) {
                     buttonTextSpan.textContent = 'Sending...';
                 }
                 button.disabled = true;
 
-                // Simulate sending (1.5s delay)
-                setTimeout(() => {
-                    if (buttonTextSpan) buttonTextSpan.textContent = 'Message Sent!';
-                    button.classList.add('bg-green-500', 'text-white');
+                try {
+                    const response = await fetch('/send-email', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(data)
+                    });
 
-                    // Reset form
-                    contactForm.reset();
+                    const result = await response.json();
 
+                    if (response.ok) {
+                        if (buttonTextSpan) buttonTextSpan.textContent = 'Message Sent!';
+                        button.classList.add('bg-green-500', 'text-white');
+                        contactForm.reset();
+                    } else {
+                        throw new Error(result.error || 'Failed to send message');
+                    }
+                } catch (error) {
+                    console.error('Error:', error);
+                    if (buttonTextSpan) buttonTextSpan.textContent = 'Error!';
+                    button.classList.add('bg-red-500', 'text-white');
+                    alert('Failed to send message: ' + error.message);
+                } finally {
                     // Restore button after 3 seconds
                     setTimeout(() => {
                         button.innerHTML = originalText;
-                        button.classList.remove('bg-green-500', 'text-white');
+                        button.classList.remove('bg-green-500', 'text-white', 'bg-red-500');
                         button.disabled = false;
                     }, 3000);
-                }, 1500);
+                }
             });
         }
 
